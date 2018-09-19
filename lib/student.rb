@@ -6,6 +6,7 @@ class Student
     x.id = row[0]
     x.name = row[1]
     x.grade = row [2]
+    x
   end
 
   def self.all
