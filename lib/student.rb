@@ -2,17 +2,31 @@ class Student
   attr_accessor :id, :name, :grade
 
   def self.new_from_db(row)
-    # create a new Student object given a row from the database
+    n = self.new
+    n.id = row[0]
+    n.name = row[1]
+    n.grade = row [2]
   end
 
   def self.all
     # retrieve all the rows from the "Students" database
     # remember each row should be a new instance of the Student class
+    sql = 'select * from students'
+    DB[:conn].execute(sql).map{ |row|
+      self.new_from_db(row)
+    }
   end
 
   def self.find_by_name(name)
     # find the student in the database given a name
     # return a new instance of the Student class
+    sql = <<-SQL 
+      select * from students
+      where name = ? limit 1 SQL 
+
+    DB[:conn].execute(sql,name).map{ |row|
+      self.new_from_db(row)
+    }.first
   end
   
   def save
