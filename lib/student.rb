@@ -10,8 +10,6 @@ class Student
   end
 
   def self.all
-    # retrieve all the rows from the "Students" database
-    # remember each row should be a new instance of the Student class
     sql = 'select * from students'
     DB[:conn].execute(sql).map{ |row|
       self.new_from_db(row)
@@ -19,13 +17,17 @@ class Student
   end
 
   def self.find_by_name(name)
-    # find the student in the database given a name
-    # return a new instance of the Student class
     sql = "select * from students where name = ? limit 1"
-
     DB[:conn].execute(sql,name).map{ |row|
       self.new_from_db(row)
     }.first
+  end
+
+  def self.all_students_in_grade_9
+    sql = "select * from students where grade = 9"
+    DB[:conn].execute(sql).map{ |row|
+      self.new_from_db(row)
+    }
   end
 
   def save
